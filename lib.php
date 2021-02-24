@@ -19,6 +19,72 @@ defined('MOODLE_INTERNAL') || die();
 class enrol_veri_plugin extends enrol_plugin {
 
     /**
+     * Does this plugin allow manual enrolments?
+     *
+     * @param stdClass $instance course enrol instance
+     * All plugins allowing this must implement 'enrol/xxx:enrol' capability
+     *
+     * @return bool - true means user with 'enrol/xxx:enrol' may enrol others freely, false means nobody may add more enrolments manually
+     */
+    public function allow_enrol(stdClass $instance) {
+        return true;
+    }
+
+    /**
+     * Does this plugin allow manual unenrolment of all users?
+     * All plugins allowing this must implement 'enrol/xxx:unenrol' capability
+     *
+     * @param stdClass $instance course enrol instance
+     * @return bool - true means user with 'enrol/xxx:unenrol' may unenrol others freely, false means nobody may touch user_enrolments
+     */
+    public function allow_unenrol(stdClass $instance) {
+        return true;
+    }
+
+    /**
+     * Does this plugin allow manual changes in user_enrolments table?
+     *
+     * All plugins allowing this must implement 'enrol/xxx:manage' capability
+     *
+     * @param stdClass $instance course enrol instance
+     * @return bool - true means it is possible to change enrol period and status in user_enrolments table
+     */
+    public function allow_manage(stdClass $instance) {
+        return true;
+    }
+
+    /**
+     * Returns link to page which may be used to add new instance of enrolment plugin in course.
+     * @param int $courseid
+     * @return moodle_url page url
+     */
+    public function get_newinstance_link($courseid) {
+        // override for most plugins, check if instance already exists in cases only one instance is supported
+        return NULL;
+    }
+
+    /**
+     * Is it possible to delete enrol instance via standard UI?
+     *
+     * @param stdClass  $instance
+     * @return bool
+     */
+    public function can_delete_instance($instance) {
+        return true;
+    }
+
+    /**
+     * Returns link to manual enrol UI if exists.
+     * Does the access control tests automatically.
+     *
+     * @param object $instance
+     * @return moodle_url
+     */
+    public function get_manual_enrol_link($instance) {
+        return NULL;
+    }
+
+    /**
      * We are a good plugin and don't invent our own UI/validation code path.
      *
      * @return boolean
