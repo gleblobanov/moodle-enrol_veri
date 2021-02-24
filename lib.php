@@ -53,15 +53,7 @@ class enrol_veri_plugin extends enrol_plugin {
         return true;
     }
 
-    /**
-     * Returns link to page which may be used to add new instance of enrolment plugin in course.
-     * @param int $courseid
-     * @return moodle_url page url
-     */
-    public function get_newinstance_link($courseid) {
-        // override for most plugins, check if instance already exists in cases only one instance is supported
-        return NULL;
-    }
+
 
     /**
      * Is it possible to delete enrol instance via standard UI?
@@ -71,6 +63,31 @@ class enrol_veri_plugin extends enrol_plugin {
      */
     public function can_delete_instance($instance) {
         return true;
+    }
+
+    /**
+     * We are a good plugin and don't invent our own UI/validation code path.
+     *
+     * @return boolean
+     */
+    public function use_standard_editing_ui() {
+        return true;
+    }
+
+    /**
+     * Return whether or not, given the current state, it is possible to add a new instance
+     * of this enrolment plugin to the course.
+     *
+     * Default implementation is just for backwards compatibility.
+     *
+     * @param int $courseid
+     * @return boolean
+     */
+    public function can_add_instance($courseid) {
+        return true;
+
+        //$link = $this->get_newinstance_link($courseid);
+        //return !empty($link);
     }
 
     /**
@@ -85,12 +102,15 @@ class enrol_veri_plugin extends enrol_plugin {
     }
 
     /**
-     * We are a good plugin and don't invent our own UI/validation code path.
-     *
-     * @return boolean
+     * Returns link to page which may be used to add new instance of enrolment plugin in course.
+     * @param int $courseid
+     * @return moodle_url page url
      */
-    public function use_standard_editing_ui() {
-        return true;
+    public function get_newinstance_link($courseid) {
+        // override for most plugins, check if instance already exists in cases only one instance is supported
+        return NULL;
     }
+
+
 
 }
